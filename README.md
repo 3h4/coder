@@ -18,7 +18,7 @@ The thumbs on the other hand have only one task - to press on the space bar (and
 
 6. **Selection layer**, Select words and sentences 
 
-7. **Window layer**, Move windows on the screen 
+7. **Window layer**, Move windows on the screen using  [Spectacle](https://www.spectacleapp.com/)
 
 Of the number buttons only 2,3, and 8,9 are suitable for use as you can see in the keymap below. This is because they are pressed by the ring and long fingers, only these fingers are long enough to reach up to the number row. 
 
