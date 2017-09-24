@@ -26,9 +26,9 @@ The remap is implemented as a [Karabiner](https://pqrs.org/osx/karabiner/) confi
 
 Suggestions for new remappings are also welcome if they can be justified by reasonable arguments.
 
-![Layout](https://github.com/3h4/coder/raw/master/fig1.png)
+![Layout](https://github.com/3h4/coder/raw/master/keymap.png)
 
-![Layout](https://github.com/3h4/coder/raw/master/fig2.png)
+
 
 
 

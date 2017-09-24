@@ -1,0 +1,215 @@
+<head>
+	<meta charset="UTF-8">
+</head>
+<script src="https://unpkg.com/vue@2.2.6"></script>
+<style>
+
+body {
+	margin:0;
+}
+
+#container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom:10px;
+}
+
+#label {
+	text-align: center;
+	font-size: 20px;
+	padding: 10px;
+	font-family: serif;
+}
+
+#input {
+	font-size: 20px;
+	font-family: serif;
+}
+
+#items{
+	text-align: center;
+}
+
+.key-button {
+	margin:1px;
+	background:lightgrey;
+	float:left;
+	width:10%;
+	height:20%;
+	text-align:center;
+	padding: 3px;
+	margin: 0;
+	resize: none;
+	display: inline;
+	border:1px solid black;
+	box-sizing:border-box;
+	overflow:hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	word-wrap: break-word;
+}
+
+.key-button:nth-child(1){
+	margin-left: 10%;
+}
+
+.key-button:nth-child(3){
+	margin-left: 40%;
+}
+
+.key-button:nth-child(4){
+	margin-right:10%;
+}
+
+.key-button:nth-child(37) {
+	width:60%;
+}
+
+.keyboard{
+	display:inline-block;
+	overflow:hidden;
+	width: 50%;
+	height: 300px;
+	padding: 20px 20px;
+	box-sizing: border-box;
+}
+
+.thumb{
+	background:lightgreen;
+}
+
+.blocked{
+	background:pink;
+}
+
+.swapmode{
+	color:red;
+}
+
+.selected{
+	background:lightblue;
+}
+
+.editor{
+	height:100%;
+	width:100%;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+#swp{
+	position: fixed;
+	background: white;
+	padding: 15px;
+	border: 1px solid black;
+	cursor: pointer;
+	position: fixed;
+	top: 30px;
+	left: 20px;
+}
+
+</style>
+
+<div id="container">
+	<span id="label">{{current_challenge}}</span>
+	<input type='text' id="input" v-model="input_text" @keyup.enter="submit" size=15/>
+</div>
+<script>
+
+var choose_from = "~!@#$%^&*()_+{}|:\"<>?`1234567890-=[]\\;',./qwertyuioasdfghjklzxcvbnm";
+
+var vm = new Vue({
+	data: {
+		current_challenge: "",
+		input_text: "",
+	},
+		created:function(){
+		this.submit();
+	},
+	methods: {
+		submit:function() {
+			if(this.current_challenge === this.input_text) {
+				var c = "";
+				for (var i = 0 ; i < 10 ; i++){
+					var char = choose_from[Math.floor(Math.random()*choose_from.length)]
+					c+=char;
+				}
+				this.current_challenge = c;
+				this.input_text = '';
+			}
+		}
+	},
+	el:'#container'
+});
+
+</script>
+
+<div id="items">
+	<div id="swp" v-bind:class="{ swapmode: swapmode === true }" v-on:click="swapmode = !swapmode; selected=-1">Swap mode</div>
+	<div class="keyboard" v-for="board,boardidx in keyboards">
+		<textarea
+		class="key-button"
+		v-for="key,keyidx in board"
+		v-bind:style="{fontSize: size(key) }"
+		v-bind:class="{
+			selected : selected.key === keyidx && selected.board === boardidx,
+			thumb:key === 'Thumb',
+			blocked:key === 'Blocked',
+			'first-keyboard' : 0 === boardidx
+		}"
+		v-on:keyup="changed($event,keyidx,boardidx)"
+		:value="key"
+		contenteditable='true'
+		v-on:click="clicked(keyidx,boardidx)">
+		</textarea>
+	</div>
+</div>
+
+<script>
+l = console.log
+
+var vm = new Vue({
+	data: {
+	swapmode:false,
+	selected:-1,
+    keyboards: (localStorage.keyboards? JSON.parse(localStorage.keyboards) :
+[["+","_","/","*","x","f","m","l","w","y","u","o","b","j","d","s","t","n","r","i","a","e","h","?","z","v","g","c","k","p",".","-",",","q","Shift + Enter","Delete","Space","Enter","Escape"],["ä","ö","InptPrev","InptNext","X","F","M","L","W","Y","U","O","B","J","D","S","T","N","R","I","A","E","H","Å","Z","V","G","C","K","P","å","Ä","Ö","Q","Blocked","Blocked","","Blocked","Thumb"],["Shift + Tab","Tab","Set Breakpoint","","BoP/Up directory","PgDn","Cdown","Redo","","DEoL","Dwright","Cright","Wright","BoL","EoP","PgUp","Cup","Undo","SaveSwapRun","DBoL","Dwleft","Cleft","Wleft","EoL","Comment","Cut","Copy","Paste","","Join Lines","Dline","Dupline","Dright","Matching Brace","Blocked","Thumb","Go to Browser Address Field","Blocked","Blocked"],["&","!","Back","Forward","|","[","]",":","`","^","'","Resume","Step over","Step Out","$","(",")",";","<",">","=","Run/Debug","","Step In","\\","{","}","@","~","#","\"","","Clear Console","","Blocked","Blocked","Quick Goto/Print","Thumb","Blocked"],["Save","Open\n","9","%","WindowPrev","PrgmPrev","PrgmNext","Replace","Search All Files","Close Application","New Window","3","4","5","WindowNext","TabLeft","TabRight","Search","","Close Window/Tab","New Tab","0","1","2","DesktopLeft","DesktopRight","Show Desktop","Show MiniatureWindows","","","","6","7","8","Thumb","Blocked","Start Program","Blocked","Blocked"],["DeselOccurrence","SelOccurence","","","SelBoP","SelPgD","SelDown","","","","SelShrink","SelRight","SelWright","SelBoL","SelEoP","SelPgUp","SelUp","Select All","","","SelExtend","SelLeft","SelWleft","SelEoL","Blocked","Blocked","Blocked","Blocked","Blocked","Blocked","Blocked","Blocked","Blocked","Blocked","Blocked","Thumb","Blocked","Thumb","Blocked"],["Sleep","Get info","","","UpperLeft","F2","CmdEnter","","","","","","","UpperRight","LeftHalf","FullScreen","","","","","","","","RightHalf","LowerLeft","Open Devtools","Inspect","","","","","","","LowerRight","Thumb","Blocked","","Thumb","Blocked"],["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","Blocked","Thumb","","Blocked","Blocked"],["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","Thumb","Blocked","","Blocked","Blocked"]]
+)},
+
+	methods:{
+		size:function(str) {
+			str = str.toString();
+			var len = str.length
+			var size = len < 2 ? 40 :len < 5 ? 20 : len < 10 ? 15 : 12;
+			return size + 'px';
+		},
+		changed:function(evt, keyidx,boardidx) {
+			var txt = evt.target.value;
+			this.keyboards[boardidx].splice(keyidx,1,txt);
+			localStorage.keyboards = JSON.stringify(this.keyboards);
+		},
+		clicked:function(keyidx, boardidx) {
+			if(!this.swapmode) {
+				return;
+			}
+			if(this.selected === -1) {
+				this.selected = {board:boardidx, key:keyidx}
+			}
+			else {
+				var text1 = this.keyboards[this.selected.board][this.selected.key];
+				var text2 = this.keyboards[boardidx][keyidx];
+				this.keyboards[boardidx].splice(keyidx,1,text1);
+				this.keyboards[this.selected.board].splice(this.selected.key,1,text2);
+				this.selected = -1;
+				localStorage.keyboards = JSON.stringify(this.keyboards);
+			}
+		}
+	},
+	el:'#items'
+});
+
+</script>
