@@ -1,6 +1,4 @@
-# coder
-
-Coder keyboard layout - A layout optimized for those who write code
+# Coder keyboard layout
 
 On a standard keyboard layout the pinkies are exposed to heavy workloads, despite being the weakest and slowest fingers. Apart from their designated letters and numbers, they are responsible for the Enter, Backspace, Escape, Shift, Delete, Control, Tab and the Arrow buttons. The main goal of this layout is to reduce the load on the little fingers. 
 
@@ -27,8 +25,3 @@ The remap is implemented as a [Karabiner](https://pqrs.org/osx/karabiner/) confi
 Suggestions for new remappings are also welcome if they can be justified by reasonable arguments.
 
 ![Layout](https://github.com/3h4/coder/raw/master/keymap.png)
-
-
-
-
-
