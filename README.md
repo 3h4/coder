@@ -26,9 +26,9 @@ You may notice that some commands are possible to access with only one hand on t
 - *Left hand*: Inspect web elements, increase/decrease CSS. *Right hand*: Use the mouse for selection of elements and CSS rules. ([Chrome devtools custom hotkeys](https://bugs.chromium.org/p/chromium/issues/detail?id=174309) have to be implemented before this will fully work).
 - *Left hand*: Comment code, tab in, tab out, delete, add line (return). *Right hand*: Use the mouse for selection and moving the caret.
 - *Right hand*: Run/debug, step in, step out, step over, clear the console. *Left hand*: Use the mouse for expanding data structures setting breakpoints etc.
-- *Right hand*: Go backwards, forwards. *Left hand*: Use the mouse to click on hyperlinks.
+- *Right hand*: Go backwards, forwards. *Left hand*: Use the mouse to click on hyperlinks and browse the web.
 
-The left and right hand should alternate using the mouse for ergonomy. Apart from this, here are some additional requirements:
+The left and right hand should alternate using the mouse for ergonomy as you can see above. Apart from this, here are some additional requirements:
 - Capital letters should be in the same layer (often used together).
 - Navigate the caret then select text should be smooth (pressing one additional modifier button). 
 - Undo should be in the same layer as the deleting buttons.
